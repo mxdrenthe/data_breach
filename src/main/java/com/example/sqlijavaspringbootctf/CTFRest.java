@@ -1,6 +1,5 @@
 package com.example.sqlijavaspringbootctf;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +13,7 @@ import java.util.Map;
 @RequestMapping(path = "/api")
 public class CTFRest {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public CTFRest(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -22,15 +21,11 @@ public class CTFRest {
 
     @GetMapping("/welcome")
     public String welcome() {
-        return "Welcome to this API as part of a CTF Challenge their is an /api/execute HTTP GET endpoint also with a single parameter named sql";
+        return "Welcome to this API as part of a CTF Challenge";
     }
 
     @GetMapping("/execute/{sql}")
-    public List<Map<String, Object>> executeAnySQL (@PathVariable String sql) {
-        List<Map<String, Object>> resultList = null;
-
-        resultList = jdbcTemplate.queryForList(sql);
-
-        return resultList;
+    public List<Map<String, Object>> executeAnySQL(@PathVariable String sql) {
+        return jdbcTemplate.queryForList(sql);
     }
 }
